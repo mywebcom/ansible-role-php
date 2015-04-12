@@ -1,0 +1,14 @@
+---
+web_php_version: php5.4
+web_php_memcache: "false"
+web_php_imagemagick: "false"
+web_php_ioncube: "false"
+
+web_php_opcache: "false"
+web_php_opcache_version: 7.0.4
+web_php_opcache_memory_consumption: 128
+web_php_opcache_interned_strings_buffer: 4
+web_php_opcache_max_accelerated_files: 50000
+web_php_opcache_max_file_size: 0
+web_php_opcache_revalidate_freq: 360
+web_php_opcache_enable_cli: 1

@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Richard Cai
+  description: An Ansible role for installing php
+  company: mywebcom
+  license: Apache
+  min_ansible_version: 1.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - Precise Pangolin
+  categories:
+  - system
+  - web
+dependencies: []

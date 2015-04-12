@@ -1,0 +1,6 @@
+---
+# file tests/test.yml
+- hosts: localhost
+  remote_user: root
+  roles:
+    - ansible-role-php

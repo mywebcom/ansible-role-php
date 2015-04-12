@@ -1,0 +1,68 @@
+---
+- name: cleanup apt cache
+  shell: rm -rf /var/lib/apt/lists/*; rm -rf /var/lib/apt/lists/partial/*
+  
+- name: apt upgrade
+  shell: yes ''| apt-get update; yes '' | apt-get upgrade
+
+- name: add python package for adding new repository
+  apt: name=python-software-properties state=present
+  
+- name: add new repository for php5.4
+  apt_repository: repo=ppa:ondrej/php5-oldstable state=present
+  when: web_php_version == "php5.4"
+  
+- name: install php5.4 packages
+  apt: name={{item}} state=present
+  with_items:
+    - php5
+    - php5-fpm
+    - php5-mysql
+    - php5-gd
+    - php5-common
+    - php5-mcrypt
+    - php5-dev
+    - php5-mysql
+    
+- name: option - memcache
+  apt: name=php5-memcached state=present
+  when: web_php_memcache == "true"
+  
+- name: option - imagemagick - linux package
+  apt: name=imagemagick state=present
+  when: web_php_imagemagick == "true"
+  
+- name: option - imagemagick - php package
+  apt: name=php5-imagick state=present
+  when: web_php_imagemagick == "true"
+  
+- name: check if ioncube script file exists
+  stat: path=/root/ioncube.sh
+  register: st
+  when: web_php_ioncube == "true"
+  
+- name: option - ionCube - copy ioncube shell script to remote
+  copy: src=ioncube.sh dest=/root/ owner=root group=root mode=0700
+  when: st.stat.exists == false 
+  
+- name: option - ionCube - run ioncube shell script
+  shell: cd /root/; ./ioncube.sh
+  when: st.stat.exists == false
+  
+- name: check if opcache script file exists
+  stat: path=/root/opcache.sh
+  register: sg
+  when: web_php_opcache == "true"
+  
+- name: install opcache dependency
+  apt: name=build-essential state=present
+  when: sg.stat.exists == false  
+  
+- name: option - OpCache - copy zend opcache script to remote
+  copy: src=opcache.sh dest=/root/ owner=root group=root mode=0700
+  when: sg.stat.exists == false
+  
+- name: option - OpCache - run opcache shell script
+  shell: cd /root/; ./opcache.sh {{web_php_opcache_memory_consumption}} {{web_php_opcache_interned_strings_buffer}} {{web_php_opcache_enable_cli}} {{web_php_opcache_revalidate_freq}} {{web_php_opcache_max_accelerated_files}} {{web_php_opcache_version}}
+  when: sg.stat.exists == false  
+  
