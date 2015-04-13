@@ -3,7 +3,7 @@
   shell: rm -rf /var/lib/apt/lists/*; rm -rf /var/lib/apt/lists/partial/*
   
 - name: apt upgrade
-  shell: yes ''| apt-get update; yes '' | apt-get upgrade
+  shell: apt-get -y update; apt-get -y upgrade
 
 - name: add python package for adding new repository
   apt: name=python-software-properties state=present
