@@ -1,8 +1,8 @@
 ---
 web_php_version: php5.4
-web_php_memcache: "false"
-web_php_imagemagick: "false"
-web_php_ioncube: "false"
+web_php_memcache: "true"
+web_php_imagemagick: "true"
+web_php_ioncube: "true"
 
 web_php_opcache: "false"
 web_php_opcache_version: 7.0.4
