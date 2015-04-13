@@ -39,30 +39,28 @@
 - name: check if ioncube script file exists
   stat: path=/root/ioncube.sh
   register: st
-  when: web_php_ioncube == "true"
   
 - name: option - ionCube - copy ioncube shell script to remote
   copy: src=ioncube.sh dest=/root/ owner=root group=root mode=0700
-  when: st.stat.exists == false or web_php_ioncube == "true"
+  when: st.stat.exists == false and web_php_ioncube == "true"
   
 - name: option - ionCube - run ioncube shell script
   shell: cd /root/; ./ioncube.sh
-  when: st.stat.exists == false or web_php_ioncube == "true"
+  when: st.stat.exists == false and web_php_ioncube == "true"
   
 - name: check if opcache script file exists
   stat: path=/root/opcache.sh
   register: sg
-  when: web_php_opcache == "true"
   
 - name: install opcache dependency
   apt: name=build-essential state=present
-  when: sg.stat.exists == false or web_php_opcache == "true"
+  when: sg.stat.exists == false and web_php_opcache == "true"
   
 - name: option - OpCache - copy zend opcache script to remote
   copy: src=opcache.sh dest=/root/ owner=root group=root mode=0700
-  when: sg.stat.exists == false or web_php_opcache == "true"
+  when: sg.stat.exists == false and web_php_opcache == "true"
   
 - name: option - OpCache - run opcache shell script
   shell: cd /root/; ./opcache.sh {{web_php_opcache_memory_consumption}} {{web_php_opcache_interned_strings_buffer}} {{web_php_opcache_enable_cli}} {{web_php_opcache_revalidate_freq}} {{web_php_opcache_max_accelerated_files}} {{web_php_opcache_version}}
-  when: sg.stat.exists == false or web_php_opcache == "true"
+  when: sg.stat.exists == false and web_php_opcache == "true"
   
