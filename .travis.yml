@@ -12,4 +12,7 @@ install:
 script:
   - 'ansible-playbook -i tests/inventory tests/test.yml --syntax-check'
   - 'ansible-playbook -i tests/inventory tests/test.yml --connection=local -vvvv --sudo'
-  - 'which php'
+  - 'php -i | grep -q "memcache" && (echo "Test Passed" && exit 0) || (echo "Test Failed" && exit 1)'
+  - 'php -i | grep -q "opcache" && (echo "Test Passed" && exit 0) || (echo "Test Failed" && exit 1)'
+  - 'php -i | grep -q "imagemagick" && (echo "Test Passed" && exit 0) || (echo "Test Failed" && exit 1)'
+  - 'php -i | grep -q "ioncube" && (echo "Test Passed" && exit 0) || (echo "Test Failed" && exit 1)'
