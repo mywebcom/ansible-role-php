@@ -23,6 +23,7 @@
     - php5-mcrypt
     - php5-dev
     - php5-mysql
+    - php5-curl
     
 - name: option - memcache
   apt: name=php5-memcached state=present
@@ -63,4 +64,33 @@
 - name: option - OpCache - run opcache shell script
   shell: cd /root/; ./opcache.sh {{web_php_opcache_memory_consumption}} {{web_php_opcache_interned_strings_buffer}} {{web_php_opcache_enable_cli}} {{web_php_opcache_revalidate_freq}} {{web_php_opcache_max_accelerated_files}} {{web_php_opcache_version}}
   when: sg.stat.exists == false and web_php_opcache == "true"
+  
+- name:  update php.ini for fpm
+  template: src=php-fpm.ini dest=/etc/php5/fpm/php.ini owner=root group=root mode=0644
+  
+- name: update php.ini for cli
+  template: src=php-cli.ini dest=/etc/php5/cli/php.ini owner=root group=root mode=0644
+  
+- name: create web group
+  group: name={{web_group}} state=present
+
+- name: create web user
+  user: name={{web_user}} group={{web_group}} createhome="yes" state=present shell=/bin/bash
+  
+- name: create log directory
+  file: path=/home/{{web_user}}/log group={{web_group}} owner={{web_user}} state=directory
+  
+- name: update php5-fpm.conf
+  template: src=php-fpm.conf dest=/etc/php5/fpm/php-fpm.conf owner=root group=root mode=0644
+  
+- name: copy php logrotate script
+  template: src=php-logrotate.d.ini dest=/etc/logrotate.d/php5-fpm
+  
+- name: update www.conf for fpm
+  template: src=php-fpm-www.conf dest=/etc/php5/fpm/pool.d/www.conf owner=root group=root mode=0644
+  notify: restart php5-fpm
+  
+- name: ensure php-fpm start on boot
+  service: name=php5-fpm enabled=yes
+
   

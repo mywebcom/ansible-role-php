@@ -21,4 +21,12 @@ if [ ! -f ${PHP_CONFIG}ioncube.ini ]; then
 	echo ${STRING} > ${PHP_CONFIG}ioncube.ini
 fi
 	
+if [ -d ioncube ]; then
+	rm -Rf ioncube
+fi
+
+if [ -f ioncube_loaders_lin_x86-64.tar.gz ]; then
+	rm -Rf ioncube_loaders_lin_x86-64.tar.gz
+fi
+
 exit 0

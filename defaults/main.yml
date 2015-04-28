@@ -12,3 +12,16 @@ web_php_opcache_max_accelerated_files: 50000
 web_php_opcache_max_file_size: 0
 web_php_opcache_revalidate_freq: 360
 web_php_opcache_enable_cli: 1
+
+web_php_max_execution_time: 30
+web_php_memory_limit: 128M
+web_php_upload_max_filesize: 20M
+web_php_max_input_nesting_level: 60
+web_php_date_timezone: Australia/Melbourne
+web_php_max_input_vars: 60
+
+web_user: www
+web_group: www
+
+web_php_fpm_request_terminate_timeout: 0
+web_php_fpm_request_slowlog_timeout: 0
