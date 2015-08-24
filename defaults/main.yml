@@ -25,3 +25,11 @@ web_group: www
 
 web_php_fpm_request_terminate_timeout: 0
 web_php_fpm_request_slowlog_timeout: 0
+web_php_fpm_pm_max_children: 5
+web_php_fpm_pm_start_servers: 1
+web_php_fpm_pm_min_spare_servers: 1
+web_php_fpm_pm_max_spare_servers: 3
+
+php_pcre_recursion_limit: 16777
+
+php_install_upgrade: true

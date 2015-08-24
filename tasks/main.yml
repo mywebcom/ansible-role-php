@@ -1,9 +1,11 @@
 ---
 - name: cleanup apt cache
   shell: rm -rf /var/lib/apt/lists/*; rm -rf /var/lib/apt/lists/partial/*
+  when: php_install_upgrade == true
   
 - name: apt upgrade
   apt: update_cache=yes force=yes
+  when: php_install_upgrade == true
 
 - name: add python package for adding new repository
   apt: name=python-software-properties state=present
@@ -24,6 +26,9 @@
     - php5-dev
     - php5-mysql
     - php5-curl
+    - php5-cli
+    - php5-dev
+    - php-pear
     
 - name: option - memcache
   apt: name=php5-memcached state=present
@@ -88,7 +93,7 @@
   
 - name: update www.conf for fpm
   template: src=php-fpm-www.conf dest=/etc/php5/fpm/pool.d/www.conf owner=root group=root mode=0644
-  notify: restart php5-fpm
+  notify: reload php5-fpm
   
 - name: ensure php-fpm start on boot
   service: name=php5-fpm enabled=yes
